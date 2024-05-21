@@ -4,6 +4,7 @@ import { Student } from "./student.interface";
 
 const createStudentToDb = async (student: Student) => {
     const result = await StudentModel.create(student);
+    console.log('student created successfully');
     return result;
 }
 
