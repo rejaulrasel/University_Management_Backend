@@ -1,11 +1,9 @@
-import { NextFunction, Request, Response } from "express";
-import studentValidationSchema from "../student/student.validations";
+import { RequestHandler } from "express";
 import { UserServices } from "./user.service";
-import userValidationSchema from "./user.validation";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
-const createStudent = async (req: Request, res: Response, next: NextFunction) => {
+const createStudent: RequestHandler = async (req, res, next) => {
     try {
 
         const { password, student: studentData } = req.body;
@@ -16,13 +14,6 @@ const createStudent = async (req: Request, res: Response, next: NextFunction) =>
 
         // will call service function to dend this data
         const result = await UserServices.createStudentToDb(password, studentData);
-
-        //send respone to the client
-        // res.status(200).json({
-        //     success: true,
-        //     message: 'Student created Succesfully',
-        //     data: result,
-        // })
 
         sendResponse(res, {
             statusCode: httpStatus.OK,

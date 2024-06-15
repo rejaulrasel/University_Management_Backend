@@ -1,11 +1,7 @@
-import { strict } from "assert";
-import { timeStamp } from "console";
 import { Schema, model } from "mongoose";
 import { TUser } from "./user.interface";
-import { func } from "joi";
 import bcrypt from "bcrypt";
 import config from "../../config";
-import { NextFunction } from "express";
 
 const userSchema = new Schema<TUser>({
     id: {

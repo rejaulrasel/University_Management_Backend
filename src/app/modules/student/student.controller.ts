@@ -1,58 +1,45 @@
-import { NextFunction, Request, Response } from "express";
-import { z } from "zod";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { StudentServices } from "./student.service";
-import studentValidationSchema from "./student.validations";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
-
-//get all students
-const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const result = await StudentServices.getAllStudentsFromDb()
-
-        // res.status(200).json({
-        //     success: true,
-        //     message: 'Students are retrieved succesfully',
-        //     data: result,
-        // })
-
-        sendResponse(res, {
-            statusCode: httpStatus.OK,
-            success: true,
-            message: 'Students are retrieved succesfully',
-            data: result
-        })
-    } catch (err) {
-        next(err)
+//create a higher order function as catchAsync for stopping try-catch repittion
+const catchAsync = (fn: RequestHandler) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        Promise.resolve(fn(req, res, next)).catch(err => next(err))
     }
-};
-
+}
 
 //get a single student
-
-const getSingleStudent = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+const getSingleStudent = catchAsync(
+    async (req, res) => {
         const studentId = req.params.studentId
         const result = await StudentServices.getSingleStudentFromDb(studentId);
-
-
-        // res.status(200).json({
-        //     success: true,
-        //     message: 'Student retrieved successfully',
-        //     data: result
-        // })
 
         sendResponse(res, {
             statusCode: httpStatus.OK,
             success: true,
             message: 'Student retrieved succesfully',
             data: result
-        })
-    } catch (err) {
-        next(err)
-    }
-}
+        });
+    });
+
+
+
+//get all students
+const getAllStudents = catchAsync(
+    async (req, res) => {
+        const result = await StudentServices.getAllStudentsFromDb()
+
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Students are retrieved succesfully',
+            data: result
+        });
+    });
+
+
 
 
 

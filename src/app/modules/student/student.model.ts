@@ -1,7 +1,6 @@
-import { Schema, Types, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import validator from 'validator';
 import { TGuardian, TLocalGuardian, TStudent, TUserName } from './student.interface';
-import { Types } from 'mongoose';
 const userNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
