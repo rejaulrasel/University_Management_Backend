@@ -1,7 +1,8 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import validator from 'validator';
-import { Guardian, LocalGuardian, Student, UserName } from './student.interface';
-const userNameSchema = new Schema<UserName>({
+import { TGuardian, TLocalGuardian, TStudent, TUserName } from './student.interface';
+import { Types } from 'mongoose';
+const userNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
         required: [true, 'First name is required'],
@@ -22,7 +23,7 @@ const userNameSchema = new Schema<UserName>({
     },
 });
 
-const guardianSchema = new Schema<Guardian>({
+const guardianSchema = new Schema<TGuardian>({
     fatherName: { type: String, required: [true, 'Father name is required'] },
     fatherOccupation: { type: String, required: [true, 'Father occupation is required'] },
     fatherContactNo: { type: String, required: [true, 'Father contact number is required'] },
@@ -31,7 +32,7 @@ const guardianSchema = new Schema<Guardian>({
     motherContactNo: { type: String, required: [true, 'Mother contact number is required'] },
 });
 
-const localGuardianSchema = new Schema<LocalGuardian>({
+const localGuardianSchema = new Schema<TLocalGuardian>({
     name: { type: String, required: [true, 'Local guardian name is required'] },
     occupation: { type: String, required: [true, 'Local guardian occupation is required'] },
     contactNo: { type: String, required: [true, 'Local guardian contact number is required'] },
@@ -39,8 +40,14 @@ const localGuardianSchema = new Schema<LocalGuardian>({
 });
 
 // main student schema
-const studentschema = new Schema<Student>({
+const studentschema = new Schema<TStudent>({
     id: { type: String, required: [true, 'ID is required'], unique: true },
+    user: {
+        type: Schema.Types.ObjectId,
+        required: [true, "user ID is required"],
+        unique: true,
+        ref: 'User'
+    },
     name: {
         type: userNameSchema,
         required: [true, 'Name is required'],
@@ -82,15 +89,9 @@ const studentschema = new Schema<Student>({
         required: [true, 'Local guardian is required'],
     },
     profileImg: { type: String },
-    isActive: {
-        type: String,
-        enum: ['active', 'blocked'],
-        default: 'active',
-        required: [true, 'Status is required'],
-    }
 });
 
 
 //Create Student Model
 
-export const StudentModel = model<Student>('Student', studentschema);
+export const Student = model<TStudent>('Student', studentschema);
