@@ -1,14 +1,10 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
 import { StudentServices } from "./student.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
 
 //create a higher order function as catchAsync for stopping try-catch repittion
-const catchAsync = (fn: RequestHandler) => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        Promise.resolve(fn(req, res, next)).catch(err => next(err))
-    }
-}
+
 
 //get a single student
 const getSingleStudent = catchAsync(
