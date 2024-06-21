@@ -59,17 +59,11 @@ const studentschema = new Schema<TStudent>({
         },
         required: [true, 'Gender is required'],
     },
-    dateOfBirth: { type: String },
+    dateOfBirth: { type: Date },
     email: {
         type: String,
         required: [true, 'Email is required'],
-        unique: true,
-
-        //validation using validator
-        // validate: {
-        //     validator: (value: string) => validator.isEmail(value),
-        //     message: '{VALUE} is not a valid email'
-        // }
+        unique: true
     },
     contactNo: { type: String, required: [true, 'Contact number is required'] },
     emergencyContactNo: { type: String, required: [true, 'Emergency contact number is required'] },
