@@ -1,3 +1,4 @@
+import catchAsync from "../../utils/catchAsync";
 import { academicSemesterCodeNameMapper } from "./academicSemester.constant";
 import { TAcademicSemester } from "./academicSemester.interface";
 import { AcademicSemester } from "./academicSemester.model";
@@ -18,8 +19,26 @@ const getAllAcademicSemesterFromDB = async () => {
     return result;
 }
 
+const getSingleAcademicSemesterFromDB = async (payload: string) => {
+    const result = await AcademicSemester.findById(payload)
+    return result;
+}
+
+const updateSigleAcademicSemerterIntoDB = async (semesterId: string, payload: Partial<TAcademicSemester>) => {
+
+    if (payload.name && payload.code && academicSemesterCodeNameMapper[payload.name] !== payload.code) {
+        throw new Error('Invalid semester code!!')
+    }
+    const result = await AcademicSemester.updateOne({ _id: semesterId }, payload)
+    return result;
+}
+
 export const AcademicSemesterServices = {
     createAcademicSemesterIntoDB,
     getAllAcademicSemesterFromDB,
+    getSingleAcademicSemesterFromDB,
+    updateSigleAcademicSemerterIntoDB,
+
+
 
 }
