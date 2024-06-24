@@ -1,4 +1,3 @@
-import catchAsync from "../../utils/catchAsync";
 import { academicSemesterCodeNameMapper } from "./academicSemester.constant";
 import { TAcademicSemester } from "./academicSemester.interface";
 import { AcademicSemester } from "./academicSemester.model";
@@ -29,7 +28,7 @@ const updateSigleAcademicSemerterIntoDB = async (semesterId: string, payload: Pa
     if (payload.name && payload.code && academicSemesterCodeNameMapper[payload.name] !== payload.code) {
         throw new Error('Invalid semester code!!')
     }
-    const result = await AcademicSemester.updateOne({ _id: semesterId }, payload)
+    const result = await AcademicSemester.findOneAndUpdate({ _id: semesterId }, payload, { new: true })
     return result;
 }
 

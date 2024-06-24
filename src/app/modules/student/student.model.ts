@@ -82,7 +82,20 @@ const studentschema = new Schema<TStudent>({
         required: [true, 'Local guardian is required'],
     },
     profileImg: { type: String },
-});
+    admissionSemester: {
+        type: Schema.Types.ObjectId,
+        ref: 'AcademicSemester'
+    },
+    isDeleted: {
+        type: Boolean, default: false
+    },
+},
+    {
+        toJSON: {
+            virtuals: true,
+        }
+    }
+);
 
 
 //Create Student Model
