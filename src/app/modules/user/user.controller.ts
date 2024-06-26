@@ -8,9 +8,6 @@ const createStudent = catchAsync(
     async (req, res) => {
         const { password, student: studentData } = req.body;
 
-
-
-
         // will call service function to dend this data
         const result = await UserServices.createStudentToDb(password, studentData);
 
