@@ -1,6 +1,8 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
 import { TGuardian, TLocalGuardian, TStudent, TUserName } from './student.interface';
+import AppError from '../../errors/AppErrors';
+import httpStatus from 'http-status';
 const userNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
@@ -100,6 +102,18 @@ const studentschema = new Schema<TStudent>({
         }
     }
 );
+
+// studentschema.pre('save', async function (next) {
+//     const isStudentExists = await Student.findOne(
+//         { email: this.email }
+//     )
+//     // console.log(isStudentExists)
+//     if (isStudentExists) {
+//         console.log('hello')
+//         throw new Error('Student Already exists');
+//     }
+//     next();
+// })
 
 
 //Create Student Model

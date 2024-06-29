@@ -6,5 +6,6 @@ const router = express.Router();
 //client will call  controller function through this route
 router.get('/', StudentControllers.getAllStudents)
 router.get('/:studentId', StudentControllers.getSingleStudent)
+router.delete('/:studentId', StudentControllers.deleteSingleStudent);
 
 export const StudentRoutes = router;

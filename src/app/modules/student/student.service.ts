@@ -25,7 +25,13 @@ const getSingleStudentFromDb = async (id: string) => {
     return result;
 }
 
+const deleteSingleStudentFromDB = async (payload: string) => {
+    const result = await Student.deleteOne({ _id: payload });
+    return result;
+}
+
 export const StudentServices = {
     getAllStudentsFromDb,
     getSingleStudentFromDb,
+    deleteSingleStudentFromDB,
 }
