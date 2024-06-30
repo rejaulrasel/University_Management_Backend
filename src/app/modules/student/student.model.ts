@@ -3,6 +3,8 @@ import validator from 'validator';
 import { TGuardian, TLocalGuardian, TStudent, TUserName } from './student.interface';
 import AppError from '../../errors/AppErrors';
 import httpStatus from 'http-status';
+import AppError from './../../errors/AppErrors';
+import { httpStatus } from 'http-status';
 const userNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
@@ -114,6 +116,21 @@ const studentschema = new Schema<TStudent>({
 //     }
 //     next();
 // })
+
+
+//if user does not exists when delteting
+
+studentschema.pre('findOneAndUpdate', async function (next) {
+    const query = this.getQuery();
+    const isStudentExists = await Student.findOne(query);
+    // console.log(query, isStudentExists)
+
+    if (!isStudentExists) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Student not found');
+    }
+    next();
+
+})
 
 
 //Create Student Model
