@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 import { Student } from "./student.model";
 import AppError from "../../errors/AppErrors";

@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import { TUser } from "./user.interface";
 import bcrypt from "bcrypt";
 import config from "../../config";
+import { Student } from "../student/student.model";
 
 const userSchema = new Schema<TUser>({
     id: {
@@ -54,5 +55,6 @@ userSchema.post("save", function (doc, next) {
     doc.password = ''
     next();
 });
+
 
 export const User = model<TUser>('User', userSchema);

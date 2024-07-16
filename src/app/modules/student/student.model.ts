@@ -2,8 +2,6 @@ import { Schema, model } from 'mongoose';
 import validator from 'validator';
 import { TGuardian, TLocalGuardian, TStudent, TUserName } from './student.interface';
 import AppError from '../../errors/AppErrors';
-import httpStatus from 'http-status';
-import AppError from './../../errors/AppErrors';
 import { httpStatus } from 'http-status';
 const userNameSchema = new Schema<TUserName>({
     firstName: {
@@ -111,8 +109,8 @@ const studentschema = new Schema<TStudent>({
 //     )
 //     // console.log(isStudentExists)
 //     if (isStudentExists) {
-//         console.log('hello')
-//         throw new Error('Student Already exists');
+//         console.log('pre save middleware hitted');
+//         throw new AppError(httpStatus.NOT_FOUND, 'Student Already exists');
 //     }
 //     next();
 // })
