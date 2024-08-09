@@ -7,6 +7,8 @@ const academicFacultySchema = new Schema<TAcademicFaculty>({
         required: true,
         unique: true,
     }
+}, {
+    timestamps: true
 })
 
 export const AcademicFaculty = model<TAcademicFaculty>('AcademicFaculty', academicFacultySchema);
