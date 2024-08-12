@@ -39,4 +39,3 @@ process.on('uncaughtException', () => {
   process.exit(1);
 })
 
-console.log(first)
