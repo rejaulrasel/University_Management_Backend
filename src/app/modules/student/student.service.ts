@@ -7,8 +7,6 @@ import { TStudent } from "./student.interface";
 
 
 const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
-
-    console.log('base query', query);
     const queryObj = { ...query }
 
     //raw searching on email, name, address
@@ -26,8 +24,9 @@ const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
     })
 
     //filtering
-    const excludeFields = ['searchTerm', 'sort', 'limit'];
+    const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
     excludeFields.forEach((el) => delete queryObj[el]);
+    console.log({ query, queryObj })
 
 
     const filterQuery = searchQuery
@@ -49,16 +48,34 @@ const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
 
     const sortQuery = filterQuery.sort(sort);
 
-    //limiting
+    //limiting && paginating
 
-    let limit = 1;
+    let page = 1
+    let limit = Student.length;
+    let skip = 0;
+
     if (query.limit) {
-        limit = query.limit as number;
+        limit = Number(query.limit);
     }
 
-    const limitQuery = await sortQuery.limit(limit)
+    if (query?.page) {
+        page = Number(query?.page);
+        skip = (page - 1) * limit;
+    }
 
-    return limitQuery;
+    const paginateQuery = sortQuery.skip(skip);
+
+    const limitQuery = paginateQuery.limit(limit)
+
+    //field limiting
+
+    let fields = '-__v';
+    if (query?.fields) {
+        fields = (query?.fields as string).split(',').join(' ')
+    }
+
+    const fieldLimitingQuery = await limitQuery.select(fields);
+    return fieldLimitingQuery;
 }
 
 
