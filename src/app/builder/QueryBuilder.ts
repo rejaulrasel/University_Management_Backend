@@ -42,7 +42,7 @@ class QueryBuilder<T> {
         this.modelQuery = this.modelQuery.sort(sort as string);
 
         return this;
-    };
+    }
 
 
     paginate() {

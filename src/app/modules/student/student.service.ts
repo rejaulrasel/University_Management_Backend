@@ -5,6 +5,7 @@ import httpStatus from "http-status";
 import { User } from "../user/user.model";
 import { TStudent } from "./student.interface";
 import QueryBuilder from "../../builder/QueryBuilder";
+import { studentSearchableFields } from "./student.constant";
 
 
 const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
@@ -12,7 +13,7 @@ const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
 
     //raw searching on email, name, address
     // {email : {$regex: query.searchTerm, $options:'i'}}
-    const studentSearchableFields = ['email', 'name.firstName', 'presentAddress']
+
     // let searchTerm = '';
     // if (query?.searchTerm) {
     //     searchTerm = query?.searchTerm as string;
@@ -76,7 +77,14 @@ const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
     // const fieldLimitingQuery = await limitQuery.select(fields);
     // return fieldLimitingQuery;
 
-    const studentQuery = new QueryBuilder(Student.find(), query)
+    const studentQuery = new QueryBuilder(Student.find()
+        .populate('admissionSemester')
+        .populate({
+            path: 'academicDepartment',
+            populate: {
+                path: 'academicFaculty'
+            }
+        }), query)
         .search(studentSearchableFields)
         .filter()
         .sort()
